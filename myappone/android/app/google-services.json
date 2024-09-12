@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "201588770125",
+    "project_id": "loangenuisapp-18fcf",
+    "storage_bucket": "loangenuisapp-18fcf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201588770125:android:6309a0e1f9601accb2a304",
+        "android_client_info": {
+          "package_name": "com.example.myappone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyUWIU-OtSElYPNC6pWXJHtWj363yTewg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
+

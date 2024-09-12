@@ -1,0 +1,22 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.2' // Update to a supported version
+        classpath 'com.google.gms:google-services:4.3.8'
+    }
+}
+
+
+allprojects {
+    repositories {
+        google() // Make sure this is present
+        mavenCentral() // You can also add this
+    }
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
