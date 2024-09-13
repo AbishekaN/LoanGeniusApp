@@ -9,7 +9,6 @@ class ResetPasswordScreen extends StatefulWidget {
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _emailController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  bool _isLoading = false;
 
   // Function to show a styled SnackBar for success or failure messages
   void _showSnackBar(String message, Color backgroundColor) {
@@ -40,10 +39,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   Future<void> _sendPasswordResetLink() async {
-    setState(() {
-      _isLoading = true; // Show loading indicator
-    });
-
     try {
       await _auth.sendPasswordResetEmail(email: _emailController.text);
 
@@ -53,15 +48,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       // Navigate to the confirmation screen after sending the reset link
       Navigator.pushReplacementNamed(context, '/reset_confirmation');
     } on FirebaseAuthException catch (e) {
-      // Show error message
       _showSnackBar('Error: ${e.message}', Colors.red);
     } catch (e) {
-      // Show general error message
       _showSnackBar('An unexpected error occurred. Please try again.', Colors.red);
-    } finally {
-      setState(() {
-        _isLoading = false; // Hide loading indicator
-      });
     }
   }
 
@@ -74,7 +63,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Email input
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
@@ -86,13 +74,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               ),
             ),
             SizedBox(height: 20),
-            _isLoading
-                ? CircularProgressIndicator()
-                : ElevatedButton(
+            ElevatedButton(
               onPressed: _sendPasswordResetLink,
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.blue, // Set background color to blue
+                backgroundColor: Colors.blue,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -101,7 +87,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 'Send Reset Link',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.white, // Set text color to white
+                  color: Colors.white,
                 ),
               ),
             ),

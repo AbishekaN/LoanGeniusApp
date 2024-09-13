@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myappone/user_profile.dart'; // Import the UserProfileScreen
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -22,7 +23,10 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, '/editProfile');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => UserProfileScreen()), // Navigate to UserProfileScreen
+            );
           },
           child: Row(
             children: [
@@ -42,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              Navigator.pushNamed(context, '/settings');
+              Navigator.pushNamed(context, '/settings'); // Navigate to Settings screen
             },
           ),
         ],
@@ -88,7 +92,7 @@ class HomePageContent extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Container(
             height: 100,
-            color: Colors.blue[100],  // Light blue background for welcome banner
+            color: Colors.blue[100], // Light blue background for welcome banner
             child: Center(
               child: Text(
                 'Welcome G A P',
@@ -114,42 +118,42 @@ class HomePageContent extends StatelessWidget {
                 icon: Icons.person_add,
                 label: 'Add Customer',
                 onTap: () {
-                  Navigator.pushNamed(context, '/addCustomer');
+                  Navigator.pushNamed(context, '/addCustomer'); // Navigate to Add Customer screen
                 },
               ),
               CategoryCard(
                 icon: Icons.people,
                 label: 'Customer Records',
                 onTap: () {
-                  Navigator.pushNamed(context, '/customerRecords');
+                  Navigator.pushNamed(context, '/customerRecords'); // Navigate to Customer Records screen
                 },
               ),
               CategoryCard(
                 icon: Icons.credit_card,
                 label: 'Manage Loans',
                 onTap: () {
-                  Navigator.pushNamed(context, '/manageLoans');
+                  Navigator.pushNamed(context, '/manageLoans'); // Navigate to Manage Loans screen
                 },
               ),
               CategoryCard(
                 icon: Icons.check_circle_outline,
                 label: 'Loan Eligibility',
                 onTap: () {
-                  Navigator.pushNamed(context, '/predict');
+                  Navigator.pushNamed(context, '/predict'); // Navigate to Loan Eligibility (Prediction) screen
                 },
               ),
               CategoryCard(
                 icon: Icons.analytics,
                 label: 'Reports',
                 onTap: () {
-                  Navigator.pushNamed(context, '/reports');
+                  Navigator.pushNamed(context, '/reports'); // Navigate to Reports screen
                 },
               ),
               CategoryCard(
                 icon: Icons.new_releases,
                 label: 'New',
                 onTap: () {
-                  Navigator.pushNamed(context, '/newFeature'); // Handle the new feature
+                  Navigator.pushNamed(context, '/newFeature'); // Navigate to New Feature screen
                 },
               ),
             ],

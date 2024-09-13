@@ -40,6 +40,9 @@ dependencies:
   eva_icons_flutter: ^3.1.0
   fluent_ui: ^4.0.0
   feather_icons: ^1.2.0
+  firebase_storage: any
+  image_picker: ^0.8.4+11
+
 
 
 
@@ -67,6 +70,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -103,3 +107,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+assets:
+  - assets/user_icon.png

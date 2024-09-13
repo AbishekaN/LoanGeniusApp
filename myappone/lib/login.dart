@@ -11,8 +11,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  bool _isLoading = false; // Loading state
-
   // Function to show a styled SnackBar for success or failure messages
   void _showSnackBar(String message, Color backgroundColor) {
     final snackBar = SnackBar(
@@ -42,10 +40,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
-    setState(() {
-      _isLoading = true; // Show loading indicator
-    });
-
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
@@ -71,10 +65,6 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       // Handle general exceptions
       _showSnackBar('An unexpected error occurred. Please try again.', Colors.red);
-    } finally {
-      setState(() {
-        _isLoading = false; // Hide loading indicator
-      });
     }
   }
 
@@ -82,7 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Login')),
-      body: Padding(
+      body: Container(
+        color: Colors.white, // Set background color of the form to white
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -112,13 +103,11 @@ class _LoginScreenState extends State<LoginScreen> {
               obscureText: true,
             ),
             SizedBox(height: 20),
-            _isLoading // Show loading indicator while logging in
-                ? CircularProgressIndicator()
-                : ElevatedButton(
+            ElevatedButton(
               onPressed: _login,
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.blue, // Replace "primary" with "backgroundColor"
+                backgroundColor: Colors.blue, // Set background color of the button to blue
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -127,16 +116,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 'Login',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.white, // Change text color to white
+                  color: Colors.white, // Set text color to white
                 ),
               ),
             ),
             SizedBox(height: 10),
-            TextButton(
-              onPressed: () {
+            // Forgot password? - Change to plain clickable text with no button appearance
+            GestureDetector(
+              onTap: () {
                 Navigator.pushReplacementNamed(context, '/reset_pwd');
               },
-              child: Text('Forgot password?'),
+              child: Text(
+                'Forgot password?',
+                style: TextStyle(
+                  color: Colors.blue, // Blue text color
+                  fontSize: 16,
+                  decoration: TextDecoration.none, // No underline
+                ),
+                textAlign: TextAlign.center, // Center the text
+              ),
             ),
           ],
         ),

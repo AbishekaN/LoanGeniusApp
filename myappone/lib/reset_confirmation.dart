@@ -5,7 +5,8 @@ class ResetConfirmationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Reset Link Sent')),
-      body: Padding(
+      body: Container(
+        color: Colors.white, // Set the background color of the entire form to white
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +29,20 @@ class ResetConfirmationScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushReplacementNamed(context, '/login');  // Redirect to login page
               },
-              child: Text('Back to Login'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white, // White background for the button
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                elevation: 0, // Remove shadow
+              ),
+              child: Text(
+                'Back to Login',
+                style: TextStyle(
+                  color: Colors.blue, // Blue text for the button
+                  fontSize: 18,
+                ),
+              ),
             ),
           ],
         ),
