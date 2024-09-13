@@ -13,6 +13,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _isLoading = false; // Loading state
 
+  // Function to show a styled SnackBar for success or failure messages
+  void _showSnackBar(String message, Color backgroundColor) {
+    final snackBar = SnackBar(
+      content: Row(
+        children: [
+          Icon(
+            backgroundColor == Colors.green ? Icons.check_circle_outline : Icons.error_outline,
+            color: Colors.white,
+          ),
+          SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              message,
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: backgroundColor,
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      margin: EdgeInsets.all(16),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
   Future<void> _login() async {
     setState(() {
       _isLoading = true; // Show loading indicator
@@ -24,9 +52,8 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _passwordController.text,
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login successful!')),
-      );
+      // Show success message
+      _showSnackBar('Login successful!', Colors.green);
 
       // Navigate to home after successful login
       Navigator.pushReplacementNamed(context, '/home');
@@ -39,14 +66,11 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         message = 'Error: ${e.message}';
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      // Show error message
+      _showSnackBar(message, Colors.red);
     } catch (e) {
       // Handle general exceptions
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An unexpected error occurred. Please try again.')),
-      );
+      _showSnackBar('An unexpected error occurred. Please try again.', Colors.red);
     } finally {
       setState(() {
         _isLoading = false; // Hide loading indicator
@@ -61,14 +85,30 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Email input
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(
+                labelText: 'Email',
+                prefixIcon: Icon(Icons.email, color: Colors.blueAccent),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
             ),
+            SizedBox(height: 16),
+            // Password input
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(
+                labelText: 'Password',
+                prefixIcon: Icon(Icons.lock, color: Colors.blueAccent),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
               obscureText: true,
             ),
             SizedBox(height: 20),
@@ -76,7 +116,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 ? CircularProgressIndicator()
                 : ElevatedButton(
               onPressed: _login,
-              child: Text('Login'),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: Colors.blue, // Replace "primary" with "backgroundColor"
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                'Login',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white, // Change text color to white
+                ),
+              ),
             ),
             SizedBox(height: 10),
             TextButton(

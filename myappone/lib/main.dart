@@ -40,7 +40,7 @@ class LoanPredictionApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/signup',  // Default route
+      initialRoute: '/reset_pwd',  // Default route
       routes: {
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignupScreen(),
@@ -50,7 +50,13 @@ class LoanPredictionApp extends StatelessWidget {
         '/services': (context) => ServicesScreen(),
         '/loanDetails': (context) => LoanDetailsScreen(),
         '/reset_pwd': (context) => ResetPasswordScreen(),
-        '/reset_confirmation': (context) => ResetConfirmationScreen(),// Ensure this route exists
+        '/reset_confirmation': (context) => ResetConfirmationScreen(),
+        // '/dashboard': (context) => DashboardScreen(),
+        // '/addCustomer': (context) => AddCustomerScreen(),
+        // '/manageLoans': (context) => ManageLoansScreen(),
+        // '/customerRecords': (context) => CustomerRecordsScreen(),
+        // '/reports': (context) => ReportsScreen(),
+        // '/settings': (context) => SettingsScreen(),// Ensure this route exists
 
       },
     );

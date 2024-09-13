@@ -31,10 +31,17 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.3
-  firebase_core: ^3.4.1  # Make sure this is updated
-  firebase_auth: ^5.2.1  # Update to ensure compatibility with firebase_core
-  cloud_firestore: ^5.4.1
-  firebase_auth_web: ^5.8.13
+  firebase_core: any     # Allow flutter pub to find the best compatible version
+  firebase_auth: any      # Allow flutter pub to find the best compatible version
+  cloud_firestore: any    # Allow flutter pub to find the best compatible version
+  firebase_auth_web: any  # Allow flutter pub to find the best compatible version
+  firebase_database: any  # Allow flutter pub to find the best compatible version
+  font_awesome_flutter: ^10.1.0
+  eva_icons_flutter: ^3.1.0
+  fluent_ui: ^4.0.0
+  feather_icons: ^1.2.0
+
+
 
 
 

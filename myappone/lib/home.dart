@@ -1,32 +1,214 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final String userName = "John Doe"; // Replace with dynamic username if needed
+  int _currentIndex = 0;
+
+  // List of pages for bottom navigation bar
+  final List<Widget> _pages = [
+    HomePageContent(),
+    HistoryPage(),
+    MorePage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home')),
-      body: Center(
+      appBar: AppBar(
+        title: GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, '/editProfile');
+          },
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage('assets/user_icon.png'), // User icon here
+              ),
+              SizedBox(width: 8),
+              Text(
+                userName,
+                style: TextStyle(fontSize: 18),
+                overflow: TextOverflow.ellipsis, // Handles overflow
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+            },
+          ),
+        ],
+        automaticallyImplyLeading: false,
+      ),
+      body: _pages[_currentIndex], // Load the selected page
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index; // Update index when a tab is clicked
+          });
+        },
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.more_horiz),
+            label: 'More',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Home page content (new UI with GridView for catalog)
+class HomePageContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            height: 100,
+            color: Colors.blue[100],  // Light blue background for welcome banner
+            child: Center(
+              child: Text(
+                'Welcome G A P',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text('Catalog', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: GridView.count(
+            crossAxisCount: 3,
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            children: [
+              CategoryCard(
+                icon: Icons.person_add,
+                label: 'Add Customer',
+                onTap: () {
+                  Navigator.pushNamed(context, '/addCustomer');
+                },
+              ),
+              CategoryCard(
+                icon: Icons.people,
+                label: 'Customer Records',
+                onTap: () {
+                  Navigator.pushNamed(context, '/customerRecords');
+                },
+              ),
+              CategoryCard(
+                icon: Icons.credit_card,
+                label: 'Manage Loans',
+                onTap: () {
+                  Navigator.pushNamed(context, '/manageLoans');
+                },
+              ),
+              CategoryCard(
+                icon: Icons.check_circle_outline,
+                label: 'Loan Eligibility',
+                onTap: () {
+                  Navigator.pushNamed(context, '/predict');
+                },
+              ),
+              CategoryCard(
+                icon: Icons.analytics,
+                label: 'Reports',
+                onTap: () {
+                  Navigator.pushNamed(context, '/reports');
+                },
+              ),
+              CategoryCard(
+                icon: Icons.new_releases,
+                label: 'New',
+                onTap: () {
+                  Navigator.pushNamed(context, '/newFeature'); // Handle the new feature
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Category Card Widget (For Catalog Grid Items)
+class CategoryCard extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  CategoryCard({required this.icon, required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/predict'),
-              child: Text('Predict Loan Eligibility'),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/about'),
-              child: Text('About Us'),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/services'),
-              child: Text('Services'),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pushNamed(context, '/loanDetails'),
-              child: Text('Loan Details'),
-            ),
+            Icon(icon, size: 40, color: Colors.blueAccent),
+            SizedBox(height: 8),
+            Text(label, style: TextStyle(fontSize: 14)),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// History page
+class HistoryPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'History Page',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+// More page (Placeholder for more options)
+class MorePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'More Page',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
     );
   }
