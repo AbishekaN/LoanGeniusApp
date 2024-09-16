@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'api_service.dart';
 
 class PredictScreen extends StatefulWidget {
@@ -25,6 +27,19 @@ class _PredictScreenState extends State<PredictScreen> {
   String dependents = '0'; // No dependents by default
   String result = '';
   String probability = ''; // Add this to show probability
+
+  // Function to save loan prediction result to Firestore
+  Future<void> saveLoanPredictionResult(String status, String date) async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      await FirebaseFirestore.instance.collection('loanHistory').add({
+        'userId': user.uid,
+        'status': status,
+        'date': date,
+      });
+    }
+  }
 
   // Function to call API and update the UI
   Future<void> _predictLoanStatus() async {
@@ -59,14 +74,17 @@ class _PredictScreenState extends State<PredictScreen> {
         // Update the UI with the result and probability
         setState(() {
           result = apiResult['loan_status'];
-
           // Option 1: Show probability as decimal (0.58)
-          probability = double.parse(apiResult['probability'].toString())
-              .toStringAsFixed(2);
+          probability = double.parse(apiResult['probability'].toString()).toStringAsFixed(2);
 
           // Option 2: Show probability as percentage (58%)
           // probability = (double.parse(apiResult['probability'].toString()) * 100).toStringAsFixed(2) + '%';
         });
+
+        // Save the prediction result to Firestore
+        String currentDate = DateTime.now().toIso8601String();
+        saveLoanPredictionResult(result, currentDate);
+
       } catch (e) {
         // Handle any errors
         setState(() {

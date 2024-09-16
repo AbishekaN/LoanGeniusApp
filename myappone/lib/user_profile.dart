@@ -111,6 +111,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         final ref = _storage.ref().child('user_profile_images').child(user.uid + '.jpg'); // Set file path in Firebase Storage
 
         if (kIsWeb && _webImage != null) {
+          print("Uploading image from Web platform.");
           // For Flutter Web, upload image bytes
           UploadTask uploadTask = ref.putData(_webImage!, SettableMetadata(contentType: 'image/jpeg'));
           TaskSnapshot snapshot = await uploadTask.whenComplete(() => null);
@@ -118,6 +119,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           print("Uploaded image URL (Web): $downloadUrl");
           return downloadUrl;
         } else if (_profileImage != null) {
+          print("Uploading image from Mobile platform.");
           // For Mobile, upload the file
           UploadTask uploadTask = ref.putFile(_profileImage!); // Upload the image file
           TaskSnapshot snapshot = await uploadTask.whenComplete(() => null);
@@ -276,8 +278,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       // For web, use the uploaded image bytes
       return MemoryImage(_webImage!);
     } else if (_profileImage != null) {
-      // For mobile, use FileImage
-      return io.FileImage(_profileImage!);
+      // For mobile, use Image.file instead of FileImage
+      return Image.file(_profileImage!).image;
     } else if (_profileImageUrl != null && _profileImageUrl!.isNotEmpty) {
       // For web or mobile, use NetworkImage if the profile image URL exists
       return NetworkImage(_profileImageUrl!);

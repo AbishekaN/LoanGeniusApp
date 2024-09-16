@@ -11,6 +11,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  bool _isLoading = false; // To manage loading state
+
   // Function to show a styled SnackBar for success or failure messages
   void _showSnackBar(String message, Color backgroundColor) {
     final snackBar = SnackBar(
@@ -40,10 +42,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      // Validate that email and password are filled
+      _showSnackBar('Please enter both email and password.', Colors.red);
+      return;
+    }
+
+    setState(() {
+      _isLoading = true; // Show loading indicator while logging in
+    });
+
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
+        email: _emailController.text.trim(), // Trim to avoid extra spaces
+        password: _passwordController.text.trim(),
       );
 
       // Show success message
@@ -65,6 +77,10 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       // Handle general exceptions
       _showSnackBar('An unexpected error occurred. Please try again.', Colors.red);
+    } finally {
+      setState(() {
+        _isLoading = false; // Hide loading indicator
+      });
     }
   }
 
@@ -103,7 +119,10 @@ class _LoginScreenState extends State<LoginScreen> {
               obscureText: true,
             ),
             SizedBox(height: 20),
-            ElevatedButton(
+            // Login button
+            _isLoading
+                ? Center(child: CircularProgressIndicator()) // Show loading indicator when logging in
+                : ElevatedButton(
               onPressed: _login,
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),

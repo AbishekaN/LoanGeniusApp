@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myappone/user_profile.dart'; // Import the UserProfileScreen
+import 'package:myappone/history.dart'; // Make sure this is properly imported
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -7,15 +10,42 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final String userName = "John Doe"; // Replace with dynamic username if needed
+  String userName = "Loading..."; // Variable to store user's Name dynamically
   int _currentIndex = 0;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // List of pages for bottom navigation bar
   final List<Widget> _pages = [
     HomePageContent(),
-    HistoryPage(),
+    HistoryPage(), // Added HistoryPage back
     MorePage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserName(); // Load the user's name when the home screen is initialized
+  }
+
+  // Function to fetch the user's Name from Firestore
+  Future<void> _getUserName() async {
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('officers')
+            .doc(user.uid)
+            .get();
+        if (userDoc.exists) {
+          setState(() {
+            userName = userDoc.get('name') ?? 'User'; // Fetch Name from Firestore
+          });
+        }
+      }
+    } catch (e) {
+      print("Error fetching user name: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(width: 8),
               Text(
-                userName,
+                userName, // Dynamically loaded Name
                 style: TextStyle(fontSize: 18),
                 overflow: TextOverflow.ellipsis, // Handles overflow
               ),
@@ -95,7 +125,7 @@ class HomePageContent extends StatelessWidget {
             color: Colors.blue[100], // Light blue background for welcome banner
             child: Center(
               child: Text(
-                'Welcome G A P',
+                'Welcome!', // Removed hardcoded name, welcome message will remain neutral
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
@@ -118,21 +148,21 @@ class HomePageContent extends StatelessWidget {
                 icon: Icons.person_add,
                 label: 'Add Customer',
                 onTap: () {
-                  Navigator.pushNamed(context, '/addCustomer'); // Navigate to Add Customer screen
+                  Navigator.pushNamed(context, '/add_customer'); // Navigate to Add Customer screen
                 },
               ),
               CategoryCard(
                 icon: Icons.people,
-                label: 'Customer Records',
+                label: 'Records',
                 onTap: () {
-                  Navigator.pushNamed(context, '/customerRecords'); // Navigate to Customer Records screen
+                  Navigator.pushNamed(context, '/customer_records'); // Navigate to Customer Records screen
                 },
               ),
               CategoryCard(
                 icon: Icons.credit_card,
                 label: 'Manage Loans',
                 onTap: () {
-                  Navigator.pushNamed(context, '/manageLoans'); // Navigate to Manage Loans screen
+                  Navigator.pushNamed(context, '/manage_loans'); // Navigate to Manage Loans screen
                 },
               ),
               CategoryCard(
@@ -146,7 +176,7 @@ class HomePageContent extends StatelessWidget {
                 icon: Icons.analytics,
                 label: 'Reports',
                 onTap: () {
-                  Navigator.pushNamed(context, '/reports'); // Navigate to Reports screen
+                  Navigator.pushNamed(context, '/report'); // Navigate to Reports screen
                 },
               ),
               CategoryCard(
@@ -187,19 +217,6 @@ class CategoryCard extends StatelessWidget {
             Text(label, style: TextStyle(fontSize: 14)),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// History page
-class HistoryPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'History Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
     );
   }
