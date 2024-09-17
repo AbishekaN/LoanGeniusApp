@@ -87,7 +87,20 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(
+        title: Text(
+          'Login',
+          style: TextStyle(color: Colors.white), // Set text color to white
+        ),
+        backgroundColor: Colors.blue, // Set background color same as button
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white, // Set arrow color to white
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, '/signup'); // Redirect to signup page
+          },
+        ),
+      ),
       body: Container(
         color: Colors.white, // Set background color of the form to white
         padding: const EdgeInsets.all(16.0),

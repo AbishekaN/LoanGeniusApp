@@ -108,8 +108,12 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bank Officer Registration'),
+        title: Text(
+          'Registration',
+          style: TextStyle(color: Colors.white), // White text color
+        ),
         automaticallyImplyLeading: false,
+        backgroundColor: Colors.blue, // Match the button's color
       ),
       body: Container(
         color: Colors.white, // Set the background color of the entire form to white

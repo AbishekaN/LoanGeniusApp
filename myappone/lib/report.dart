@@ -6,7 +6,18 @@ class ReportsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reports'),
+        title: Text(
+          'Reports',
+          style: TextStyle(color: Colors.white), // Set AppBar text color to white
+        ),
+        backgroundColor: Colors.blue, // Set AppBar background color to blue
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white, // Set back arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back when the arrow is pressed
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

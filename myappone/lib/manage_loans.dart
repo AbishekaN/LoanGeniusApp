@@ -26,7 +26,18 @@ class _ManageLoansScreenState extends State<ManageLoansScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Loans'),
+        title: Text(
+          'Manage Loans',
+          style: TextStyle(color: Colors.white), // Set AppBar text color to white
+        ),
+        backgroundColor: Colors.blue, // Set AppBar background color to blue
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white, // Set back arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back when the arrow is pressed
+          },
+        ),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -77,7 +88,7 @@ class _ManageLoansScreenState extends State<ManageLoansScreen> {
               ],
               decoration: InputDecoration(
                 labelText: 'Loan Amount',
-                prefixIcon: Icon(Icons.money),
+                prefixIcon: Icon(Icons.money, color: Colors.blueAccent), // Set icon color to blue
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -92,14 +103,14 @@ class _ManageLoansScreenState extends State<ManageLoansScreen> {
               onPressed: _addLoan,
               style: ElevatedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.blue, // Blue background for Add Loan button
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
               child: Text(
                 'Add Loan',
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                style: TextStyle(fontSize: 18, color: Colors.white), // White text for Add Loan button
               ),
             ),
             SizedBox(height: 30),
@@ -173,7 +184,7 @@ class _ManageLoansScreenState extends State<ManageLoansScreen> {
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon),
+        prefixIcon: Icon(icon, color: Colors.blueAccent), // Set icon color to blue
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),

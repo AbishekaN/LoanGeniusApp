@@ -11,7 +11,18 @@ class _CustomerRecordsScreenState extends State<CustomerRecordsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Customer Records'),
+        backgroundColor: Colors.blue, // Set the app bar color to blue
+        title: Text(
+          'Customer Records',
+          style: TextStyle(color: Colors.white), // Set AppBar text color to white
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white, // Set back arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back when the arrow is pressed
+          },
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('customers').snapshots(),

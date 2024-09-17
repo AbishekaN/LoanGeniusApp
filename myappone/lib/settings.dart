@@ -55,7 +55,18 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: Text(
+          'Settings',
+          style: TextStyle(color: Colors.white), // Set AppBar text color to white
+        ),
+        backgroundColor: Colors.blue, // Set AppBar background color to blue
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white, // Set back arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back when the arrow is pressed
+          },
+        ),
       ),
       body: ListView(
         children: [

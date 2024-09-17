@@ -100,7 +100,18 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Customer'),
+        title: Text(
+          'Add Customer',
+          style: TextStyle(color: Colors.white), // Set AppBar text color to white
+        ),
+        backgroundColor: Colors.blue, // Set the app bar color to blue
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white, // Set back arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back when the arrow is pressed
+          },
+        ),
       ),
       body: Container(
         color: Colors.white, // Set the background color to white
@@ -111,6 +122,16 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Text(
+                'Enter Customer Details',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 16),
+
               _buildTextField(_nameController, 'Customer Name', Icons.person),
               SizedBox(height: 16),
               _buildTextField(_addressController, 'Address', Icons.location_on),
@@ -119,28 +140,33 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
               SizedBox(height: 16),
               _buildTextField(_nicController, 'NIC No', Icons.credit_card),
               SizedBox(height: 16),
+
               _buildDropdown('Gender', ['Male', 'Female', 'Other'], (value) {
                 setState(() {
                   _gender = value;
                 });
               }),
               SizedBox(height: 16),
+
               _buildDropdown('Marital Status', ['Single', 'Married', 'Divorced', 'Widowed'], (value) {
                 setState(() {
                   _maritalStatus = value;
                 });
               }),
               SizedBox(height: 16),
+
               _buildDropdown('Employment Status', ['Employed', 'Unemployed', 'Self-Employed'], (value) {
                 setState(() {
                   _employmentStatus = value;
                 });
               }),
               SizedBox(height: 16),
+
               _buildTextField(_dependantsController, 'Dependants', Icons.people),
               SizedBox(height: 16),
               _buildTextField(_currentLoansController, 'Current Loans', Icons.monetization_on),
               SizedBox(height: 30),
+
               ElevatedButton(
                 onPressed: _saveCustomer,
                 style: ElevatedButton.styleFrom(

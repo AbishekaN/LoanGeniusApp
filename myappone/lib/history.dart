@@ -56,15 +56,6 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Loan History'),
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              Navigator.pushNamed(context, '/settings');
-            },
-          ),
-        ],
       ),
       body: loanHistory.isEmpty
           ? Center(child: CircularProgressIndicator()) // Show a loading indicator while fetching data
@@ -102,5 +93,5 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
       ),
     );
-  } 
+  }
 }

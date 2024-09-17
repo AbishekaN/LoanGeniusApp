@@ -16,6 +16,8 @@ import 'customer_records.dart';  // Import customer records page
 import 'manage_loans.dart';
 import 'profile_settings.dart';
 import 'history.dart';  // Ensure this is imported correctly
+import 'splash.dart';
+
 
 // Define Firebase options for web (Replace with your actual Firebase values)
 const firebaseOptions = FirebaseOptions(
@@ -48,7 +50,7 @@ class LoanPredictionApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/signup',  // Default route
+      initialRoute: '/splash',  // Default route
       routes: {
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignupScreen(),
@@ -66,6 +68,8 @@ class LoanPredictionApp extends StatelessWidget {
         '/profile_settings': (context) => ProfileSettingsScreen(),
         '/faqs': (context) => FAQScreen(),
         '/history': (context) => HistoryPage(),  // Corrected history route
+        '/splash': (context) => MySplashScreen(),
+
       },
     );
   }

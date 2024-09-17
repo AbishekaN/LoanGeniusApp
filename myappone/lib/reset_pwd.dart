@@ -57,7 +57,21 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Reset Password')),
+      appBar: AppBar(
+        title: Text(
+          'Reset Password',
+          style: TextStyle(color: Colors.white), // Set AppBar text color to white
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white, // Set arrow (icon) color to white
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, '/login'); // Redirect to login screen
+          },
+        ),
+        backgroundColor: Colors.blue, // Set AppBar background color to blue
+        iconTheme: IconThemeData(color: Colors.white), // Ensures the back arrow is white
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

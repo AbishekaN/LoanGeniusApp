@@ -68,23 +68,15 @@ class _PredictScreenState extends State<PredictScreen> {
         // Call the API service and await the result
         Map<String, dynamic> apiResult = await apiService.predictLoanStatus(data);
 
-        // Debug: Print the result to the console
-        print('API Result: $apiResult');
-
         // Update the UI with the result and probability
         setState(() {
           result = apiResult['loan_status'];
-          // Option 1: Show probability as decimal (0.58)
           probability = double.parse(apiResult['probability'].toString()).toStringAsFixed(2);
-
-          // Option 2: Show probability as percentage (58%)
-          // probability = (double.parse(apiResult['probability'].toString()) * 100).toStringAsFixed(2) + '%';
         });
 
         // Save the prediction result to Firestore
         String currentDate = DateTime.now().toIso8601String();
         saveLoanPredictionResult(result, currentDate);
-
       } catch (e) {
         // Handle any errors
         setState(() {
@@ -97,189 +89,268 @@ class _PredictScreenState extends State<PredictScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Loan Prediction')),
-      body: Padding(
+      appBar: AppBar(
+        title: Text(
+          'Loan Prediction',
+          style: TextStyle(color: Colors.white), // Set AppBar text color to white
+        ),
+        backgroundColor: Colors.blue, // Set AppBar background color to blue
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white, // Set back arrow color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back when the arrow is pressed
+          },
+        ),
+      ),
+      body: Container(
+        color: Colors.white, // Set the background to white
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Input fields
-                TextFormField(
+                // Text header
+                Text(
+                  'Enter Your Loan Details',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 16),
+
+                // Applicant Income field
+                _buildInputField(
                   controller: applicantIncomeController,
-                  decoration: InputDecoration(labelText: 'Applicant Income'),
+                  labelText: 'Applicant Income',
+                  icon: Icons.monetization_on,
                   keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter applicant income';
-                    }
-                    return null;
-                  },
                 ),
-                TextFormField(
+                SizedBox(height: 16),
+
+                // Coapplicant Income field
+                _buildInputField(
                   controller: coapplicantIncomeController,
-                  decoration: InputDecoration(labelText: 'Coapplicant Income'),
+                  labelText: 'Coapplicant Income',
+                  icon: Icons.monetization_on,
                   keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter coapplicant income';
-                    }
-                    return null;
-                  },
                 ),
-                TextFormField(
+                SizedBox(height: 16),
+
+                // Loan Amount field
+                _buildInputField(
                   controller: loanAmountController,
-                  decoration: InputDecoration(labelText: 'Loan Amount'),
+                  labelText: 'Loan Amount',
+                  icon: Icons.attach_money,
                   keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter loan amount';
-                    }
-                    return null;
-                  },
                 ),
-                TextFormField(
+                SizedBox(height: 16),
+
+                // Loan Term field
+                _buildInputField(
                   controller: loanTermController,
-                  decoration: InputDecoration(labelText: 'Loan Term (days)'),
+                  labelText: 'Loan Term (days)',
+                  icon: Icons.calendar_today,
                   keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter loan term';
-                    }
-                    return null;
-                  },
                 ),
+                SizedBox(height: 16),
 
                 // Dropdown for Credit History
-                DropdownButtonFormField<String>(
+                _buildDropdownField(
                   value: creditHistory,
-                  onChanged: (newValue) {
-                    setState(() {
-                      creditHistory = newValue!;
-                    });
-                  },
+                  labelText: 'Credit History',
+                  icon: Icons.credit_card,
                   items: [
                     DropdownMenuItem(value: '1', child: Text('Has Credit History')),
                     DropdownMenuItem(value: '0', child: Text('No Credit History')),
                   ],
-                  decoration: InputDecoration(labelText: 'Credit History'),
+                  onChanged: (newValue) => setState(() {
+                    creditHistory = newValue!;
+                  }),
                 ),
+                SizedBox(height: 16),
 
                 // Dropdown for Gender
-                DropdownButtonFormField<String>(
+                _buildDropdownField(
                   value: gender,
-                  onChanged: (newValue) {
-                    setState(() {
-                      gender = newValue!;
-                    });
-                  },
+                  labelText: 'Gender',
+                  icon: Icons.person,
                   items: [
                     DropdownMenuItem(value: '1', child: Text('Male')),
                     DropdownMenuItem(value: '0', child: Text('Female')),
                   ],
-                  decoration: InputDecoration(labelText: 'Gender'),
+                  onChanged: (newValue) => setState(() {
+                    gender = newValue!;
+                  }),
                 ),
+                SizedBox(height: 16),
 
-                // Dropdown for Married
-                DropdownButtonFormField<String>(
+                // Dropdown for Marital Status
+                _buildDropdownField(
                   value: married,
-                  onChanged: (newValue) {
-                    setState(() {
-                      married = newValue!;
-                    });
-                  },
+                  labelText: 'Marital Status',
+                  icon: Icons.people,
                   items: [
                     DropdownMenuItem(value: '1', child: Text('Married')),
                     DropdownMenuItem(value: '0', child: Text('Not Married')),
                   ],
-                  decoration: InputDecoration(labelText: 'Marital Status'),
+                  onChanged: (newValue) => setState(() {
+                    married = newValue!;
+                  }),
                 ),
+                SizedBox(height: 16),
 
                 // Dropdown for Dependents
-                DropdownButtonFormField<String>(
+                _buildDropdownField(
                   value: dependents,
-                  onChanged: (newValue) {
-                    setState(() {
-                      dependents = newValue!;
-                    });
-                  },
+                  labelText: 'Dependents',
+                  icon: Icons.family_restroom,
                   items: [
                     DropdownMenuItem(value: '0', child: Text('0')),
                     DropdownMenuItem(value: '1', child: Text('1')),
                     DropdownMenuItem(value: '2', child: Text('2')),
                     DropdownMenuItem(value: '3+', child: Text('3+')),
                   ],
-                  decoration: InputDecoration(labelText: 'Dependents'),
+                  onChanged: (newValue) => setState(() {
+                    dependents = newValue!;
+                  }),
                 ),
+                SizedBox(height: 16),
 
                 // Dropdown for Education
-                DropdownButtonFormField<String>(
+                _buildDropdownField(
                   value: education,
-                  onChanged: (newValue) {
-                    setState(() {
-                      education = newValue!;
-                    });
-                  },
+                  labelText: 'Education',
+                  icon: Icons.school,
                   items: [
                     DropdownMenuItem(value: '1', child: Text('Graduate')),
                     DropdownMenuItem(value: '0', child: Text('Not Graduate')),
                   ],
-                  decoration: InputDecoration(labelText: 'Education'),
+                  onChanged: (newValue) => setState(() {
+                    education = newValue!;
+                  }),
                 ),
+                SizedBox(height: 16),
 
                 // Dropdown for Self-Employed
-                DropdownButtonFormField<String>(
+                _buildDropdownField(
                   value: selfEmployed,
-                  onChanged: (newValue) {
-                    setState(() {
-                      selfEmployed = newValue!;
-                    });
-                  },
+                  labelText: 'Self Employed',
+                  icon: Icons.work,
                   items: [
                     DropdownMenuItem(value: '1', child: Text('Self Employed')),
                     DropdownMenuItem(value: '0', child: Text('Not Self Employed')),
                   ],
-                  decoration: InputDecoration(labelText: 'Self Employed'),
+                  onChanged: (newValue) => setState(() {
+                    selfEmployed = newValue!;
+                  }),
                 ),
+                SizedBox(height: 16),
 
                 // Dropdown for Property Area
-                DropdownButtonFormField<String>(
+                _buildDropdownField(
                   value: propertyArea,
-                  onChanged: (newValue) {
-                    setState(() {
-                      propertyArea = newValue!;
-                    });
-                  },
+                  labelText: 'Property Area',
+                  icon: Icons.location_city,
                   items: [
                     DropdownMenuItem(value: '0', child: Text('Rural')),
                     DropdownMenuItem(value: '1', child: Text('Semiurban')),
                     DropdownMenuItem(value: '2', child: Text('Urban')),
                   ],
-                  decoration: InputDecoration(labelText: 'Property Area'),
+                  onChanged: (newValue) => setState(() {
+                    propertyArea = newValue!;
+                  }),
                 ),
+                SizedBox(height: 16),
 
                 // Button to trigger prediction
                 ElevatedButton(
                   onPressed: _predictLoanStatus,
-                  child: Text('Predict Loan Approval'),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Colors.blue, // Set button color to blue
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'Predict Loan Approval',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
                 ),
                 SizedBox(height: 20),
 
                 // Display loan status and probability
-                Text(
-                  'Loan Status: $result',
-                  style: TextStyle(fontSize: 18),
-                ),
-                Text(
-                  'Approval Probability: $probability',
-                  style: TextStyle(fontSize: 12),
-                ),
+                if (result.isNotEmpty)
+                  Column(
+                    children: [
+                      Text(
+                        'Loan Status: $result',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'Approval Probability: $probability',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  // Helper to build input fields
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required String labelText,
+    required IconData icon,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon: Icon(icon, color: Colors.blueAccent), // Set icon color to blue
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      keyboardType: keyboardType,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter $labelText';
+        }
+        return null;
+      },
+    );
+  }
+
+  // Helper to build dropdown fields
+  Widget _buildDropdownField({
+    required String value,
+    required String labelText,
+    required IconData icon,
+    required List<DropdownMenuItem<String>> items,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return DropdownButtonFormField<String>(
+      value: value,
+      decoration: InputDecoration(
+        labelText: labelText,
+        prefixIcon: Icon(icon, color: Colors.blueAccent), // Set icon color to blue
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      items: items,
+      onChanged: onChanged,
     );
   }
 }
