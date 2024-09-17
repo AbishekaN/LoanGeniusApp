@@ -68,57 +68,60 @@ class SettingsScreen extends StatelessWidget {
           },
         ),
       ),
-      body: ListView(
-        children: [
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Profile Settings'),
-            onTap: () {
-              // Navigate to Profile Settings Screen
-              Navigator.pushNamed(context, '/profile_settings');
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.security),
-            title: Text('Privacy & Security'),
-            onTap: () {
-              // Navigate to Privacy & Security Screen
-              Navigator.pushNamed(context, '/privacy_settings');
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.question_answer),
-            title: Text('FAQs'),
-            onTap: () {
-              // Navigate to FAQs Screen
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => FAQScreen()),
-              );
-            },
-          ),
-          Divider(),
-          SizedBox(height: 20),  // Add some spacing between the last tile and the button
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: ElevatedButton(
-              onPressed: () => _showLogoutConfirmationDialog(context), // Show confirmation dialog before logout
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.red, // Red button for log out
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+      body: Container(
+        color: Colors.white, // Set the form background color to white
+        child: ListView(
+          children: [
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Profile Settings'),
+              onTap: () {
+                // Navigate to Profile Settings Screen
+                Navigator.pushNamed(context, '/profile_settings');
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.security),
+              title: Text('Privacy & Security'),
+              onTap: () {
+                // Navigate to Privacy & Security Screen
+                Navigator.pushNamed(context, '/privacy_settings');
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.question_answer),
+              title: Text('FAQs'),
+              onTap: () {
+                // Navigate to FAQs Screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FAQScreen()),
+                );
+              },
+            ),
+            Divider(),
+            SizedBox(height: 20),  // Add some spacing between the last tile and the button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ElevatedButton(
+                onPressed: () => _showLogoutConfirmationDialog(context), // Show confirmation dialog before logout
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Colors.red, // Red button for log out
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Text(
+                  'Log Out',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
-              child: Text(
-                'Log Out',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

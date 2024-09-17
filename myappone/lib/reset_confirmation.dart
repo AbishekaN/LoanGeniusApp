@@ -4,14 +4,27 @@ class ResetConfirmationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Reset Link Sent')),
+      appBar: AppBar(
+        title: Text(
+          'Reset Link Sent',
+          style: TextStyle(color: Colors.white), // Set AppBar text color to white
+        ),
+        backgroundColor: Colors.blue, // Set AppBar background color to blue
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.white, // Set arrow (icon) color to white
+          onPressed: () {
+            Navigator.pop(context); // Navigate back when the arrow is pressed
+          },
+        ),
+      ),
       body: Container(
         color: Colors.white, // Set the background color of the entire form to white
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.email, size: 100, color: Colors.blue),
+            Icon(Icons.email, size: 100, color: Colors.blue), // Blue email icon
             SizedBox(height: 20),
             Text(
               'A reset password link has been sent to your email.',

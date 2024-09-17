@@ -122,15 +122,7 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'Enter Customer Details',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 16),
+              // Removed empty Text widget and the unnecessary SizedBox
 
               _buildTextField(_nameController, 'Customer Name', Icons.person),
               SizedBox(height: 16),

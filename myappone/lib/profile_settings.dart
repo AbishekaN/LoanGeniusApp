@@ -14,8 +14,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile Settings'),
+        backgroundColor: Colors.blue, // Optional: Set the AppBar background color to blue
       ),
-      body: Padding(
+      body: Container(
+        color: Colors.white, // Set the form background color to white
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [

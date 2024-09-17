@@ -56,6 +56,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Loan History'),
+        automaticallyImplyLeading: false, // Keep this as per your original setup
       ),
       body: loanHistory.isEmpty
           ? Center(child: CircularProgressIndicator()) // Show a loading indicator while fetching data

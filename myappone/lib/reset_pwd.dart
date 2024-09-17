@@ -72,7 +72,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         backgroundColor: Colors.blue, // Set AppBar background color to blue
         iconTheme: IconThemeData(color: Colors.white), // Ensures the back arrow is white
       ),
-      body: Padding(
+      body: Container(
+        color: Colors.white, // Set the background color to white
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -112,16 +112,7 @@ class _PredictScreenState extends State<PredictScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Text header
-                Text(
-                  'Enter Your Loan Details',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 16),
+                // Removed empty Text widget and unnecessary SizedBox
 
                 // Applicant Income field
                 _buildInputField(

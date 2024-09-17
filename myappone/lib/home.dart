@@ -82,7 +82,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         automaticallyImplyLeading: false,
       ),
-      body: _pages[_currentIndex], // Load the selected page
+      body: Container(
+        color: Colors.white, // Set the form background color to white
+        child: _pages[_currentIndex], // Load the selected page
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {

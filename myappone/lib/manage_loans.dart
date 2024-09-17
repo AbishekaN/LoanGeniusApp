@@ -39,139 +39,142 @@ class _ManageLoansScreenState extends State<ManageLoansScreen> {
           },
         ),
       ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('customers').snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                }
+      body: Container(
+        color: Colors.white, // Set form background color to white
+        child: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('customers').snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
 
-                final customers = snapshot.data!.docs;
+                  final customers = snapshot.data!.docs;
 
-                return DropdownButtonFormField<String>(
-                  value: _selectedCustomer,
-                  hint: Text('Select Customer'),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    labelText: 'Customer',
-                  ),
-                  items: customers.map((customer) {
-                    return DropdownMenuItem<String>(
-                      value: customer.id,
-                      child: Text(customer['name']),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedCustomer = value;
-                    });
-                  },
-                );
-              },
-            ),
-            SizedBox(height: 16),
-            // Loan Amount
-            TextField(
-              controller: _loanAmountController,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')), // Allow numbers and decimal
-              ],
-              decoration: InputDecoration(
-                labelText: 'Loan Amount',
-                prefixIcon: Icon(Icons.money, color: Colors.blueAccent), // Set icon color to blue
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-            SizedBox(height: 16),
-            _buildTextField(_loanTermController, 'Loan Term (Years)', Icons.calendar_today),
-            SizedBox(height: 16),
-            _buildTextField(_interestRateController, 'Interest Rate (%)', Icons.percent),
-            SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: _addLoan,
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.blue, // Blue background for Add Loan button
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(
-                'Add Loan',
-                style: TextStyle(fontSize: 18, color: Colors.white), // White text for Add Loan button
-              ),
-            ),
-            SizedBox(height: 30),
-            Divider(),
-            // Existing Loans List
-            Text('Existing Loans', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            SizedBox(height: 16),
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('loans').orderBy('createdAt').snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
-
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No loans found.'));
-                }
-
-                final loans = snapshot.data!.docs;
-
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: loans.length,
-                  itemBuilder: (context, index) {
-                    var loan = loans[index].data() as Map<String, dynamic>;
-
-                    return Card(
-                      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                      child: ListTile(
-                        title: Text('Loan Amount: ${loan['loanAmount']}'),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Term: ${loan['loanTerm']} years'),
-                            Text('Interest Rate: ${loan['interestRate']}%'),
-                          ],
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.edit, color: Colors.blue),
-                              onPressed: () {
-                                _editLoan(loans[index].id);
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete, color: Colors.red),
-                              onPressed: () {
-                                _deleteLoan(loans[index].id, loan['customerId']);
-                              },
-                            ),
-                          ],
-                        ),
+                  return DropdownButtonFormField<String>(
+                    value: _selectedCustomer,
+                    hint: Text('Select Customer'),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    );
-                  },
-                );
-              },
-            ),
-          ],
+                      labelText: 'Customer',
+                    ),
+                    items: customers.map((customer) {
+                      return DropdownMenuItem<String>(
+                        value: customer.id,
+                        child: Text(customer['name']),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedCustomer = value;
+                      });
+                    },
+                  );
+                },
+              ),
+              SizedBox(height: 16),
+              // Loan Amount
+              TextField(
+                controller: _loanAmountController,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')), // Allow numbers and decimal
+                ],
+                decoration: InputDecoration(
+                  labelText: 'Loan Amount',
+                  prefixIcon: Icon(Icons.money, color: Colors.blueAccent), // Set icon color to blue
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              _buildTextField(_loanTermController, 'Loan Term (Years)', Icons.calendar_today),
+              SizedBox(height: 16),
+              _buildTextField(_interestRateController, 'Interest Rate (%)', Icons.percent),
+              SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: _addLoan,
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Colors.blue, // Blue background for Add Loan button
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Text(
+                  'Add Loan',
+                  style: TextStyle(fontSize: 18, color: Colors.white), // White text for Add Loan button
+                ),
+              ),
+              SizedBox(height: 30),
+              Divider(),
+              // Existing Loans List
+              Text('Existing Loans', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              SizedBox(height: 16),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('loans').orderBy('createdAt').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return Center(child: Text('No loans found.'));
+                  }
+
+                  final loans = snapshot.data!.docs;
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: loans.length,
+                    itemBuilder: (context, index) {
+                      var loan = loans[index].data() as Map<String, dynamic>;
+
+                      return Card(
+                        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                        child: ListTile(
+                          title: Text('Loan Amount: ${loan['loanAmount']}'),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Term: ${loan['loanTerm']} years'),
+                              Text('Interest Rate: ${loan['interestRate']}%'),
+                            ],
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.edit, color: Colors.blue),
+                                onPressed: () {
+                                  _editLoan(loans[index].id);
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete, color: Colors.red),
+                                onPressed: () {
+                                  _deleteLoan(loans[index].id, loan['customerId']);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

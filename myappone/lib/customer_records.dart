@@ -13,7 +13,7 @@ class _CustomerRecordsScreenState extends State<CustomerRecordsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.blue, // Set the app bar color to blue
         title: Text(
-          'Customer Records',
+          'Records',
           style: TextStyle(color: Colors.white), // Set AppBar text color to white
         ),
         leading: IconButton(
