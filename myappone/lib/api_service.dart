@@ -5,6 +5,7 @@ class ApiService {
   // The URL of your Flask API endpoint
   final String apiUrl = "http://192.168.8.120:5000/predict";
 
+
   Future<Map<String, dynamic>> predictLoanStatus(Map<String, dynamic> data) async {
     try {
       final response = await http.post(

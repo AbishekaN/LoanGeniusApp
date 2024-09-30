@@ -285,7 +285,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       return NetworkImage(_profileImageUrl!);
     } else {
       // Default placeholder image
-      return AssetImage('assets/user_icon.png');
+      return AssetImage('assets/user.jpg');
     }
   }
 }

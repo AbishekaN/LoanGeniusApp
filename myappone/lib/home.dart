@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage('assets/user_icon.png'), // User icon here
+                backgroundImage: AssetImage('assets/user.jpg'), // User icon here
               ),
               SizedBox(width: 8),
               Text(
